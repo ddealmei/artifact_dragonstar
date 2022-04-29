@@ -25,7 +25,7 @@ bin/sae_dragonstar: $(OBJECTS_dragonstar) $(HACL_dir)/gcc-compatible/libevercryp
 
 $(HACL_dir)/gcc-compatible/libevercrypt.so:
 	cd $(HACL_dir)/gcc-compatible ; ./configure
-	make -C $(HACL_dir)/gcc-compatible -j libevercrypt.so
+	make -C $(HACL_dir)/gcc-compatible CC=clang -j libevercrypt.so
 
 $(OPENSSL_IMPLEM_dir)/%.o: $(OPENSSL_IMPLEM_dir)/%.c
 	$(CC) $(CFLAGS) -c $< -o $@
