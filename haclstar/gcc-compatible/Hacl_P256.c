@@ -4879,7 +4879,6 @@ montgomery_ladderP384L(uint64_t *p, uint64_t *q, uint8_t *scalar, uint64_t *temp
   }
 }
 
-// Daniel: temp modification
 // static inline void solinas_reduction_impl_p256(uint64_t *i, uint64_t *o)
 void solinas_reduction_impl_p256(uint64_t *i, uint64_t *o)
 {
