@@ -50,4 +50,4 @@ Then you can run the following in the docker container:
 ./scripts/perf_evaluation/bench.sh
 ```
 
-This command will run the benchmark on 20 different passwords, repeating the handshake 1000 times for each password. It produce various PDF comparing the performance of each library with different metrics (cycles, time, instruction).
+This command will run the benchmark on 20 different passwords, repeating the handshake 1000 times for each password. It produces various PDF comparing the performance of each library with different metrics (cycles, time and instructions).
