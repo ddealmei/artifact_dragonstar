@@ -1,15 +1,24 @@
 # Dragonstar: A plugin verified cryptographic implementation for Dragonfly
 
-The PAKE Dragonfly is used as SAE(-PT) in WPA3 authentication. 
+The PAKE Dragonfly is used as SAE(-PT) in WPA3 authentication.
 
-TODO: add a speech and link to hacl
+In this artifact, we rely on the NIST P-256 implementation in HACL\*, which is written and verified as described in our paper (cf. Section 2.4). Relying on such implementation provide multiple guarantees, such as secret independence, memory safety and full functional correctness.
 
+Here, we provide the code generated from HaCl\* specification, to avoid the cumbersome process of generating it again from the specification (as it is done in HaCl\* repository). 
 
 ## Repository layout
 
-## Run the PoC
+We stress that we organized this artifact to be as easy as possible to test. Hence, we provide a Dockerfile which will build a container with all needed dependencies, and compile the libraries and binaries as desired.
 
-We provide a docker to avoid any compatibility issue. 
+The most important folders are `scripts/` and `shared_folder/`, the other being used as part of the container build.
+
+* `data/` contains a dictionary of passwords, use for both benchmarking and functional testing.
+* `haclstar/` contains the C code from haclstar, with the additional modifications we did. This code can be compiled into a dynamic library.
+* `scripts/` contains the scripts to run our tests: functional (by comparing outputs to OpenSSL) and performance are available.
+* `shared_folder/` is used to share data (*e.g.* results from benchmarks) between the container and your host.
+* `src/` contains the code snippets from hostapd/wpa_suplicant that is used to establish an SAE/SAE-PT handshake. Both a version for OpenSSL and HaCl* are available.
+
+## Run the PoC
 
 ### Setup the environment 
 
