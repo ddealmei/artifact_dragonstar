@@ -3,6 +3,7 @@ CFLAGS += -O3 # -DDEBUG # -DPERF
 BIN=bin/sae_dragonstar bin/sae_dragonfly
 
 HACL_dir=$(PWD)/haclstar
+OPENSSL_local_dir=/opt/local_install
 REF_IMPLEM_dir=$(PWD)/src/ref/
 DRAGONSTAR_IMPLEM_dir=$(PWD)/src/dragonstar
 
@@ -15,11 +16,22 @@ OBJECTS_openssl := $(patsubst $(REF_IMPLEM_dir)/%.c, $(REF_IMPLEM_dir)/%.o, $(SO
 SOURCES_dragonstar := $(wildcard $(DRAGONSTAR_IMPLEM_dir)/*.c)
 OBJECTS_dragonstar  := $(patsubst $(DRAGONSTAR_IMPLEM_dir)/%.c, $(DRAGONSTAR_IMPLEM_dir)/%.o, $(SOURCES_dragonstar))
 
+# Compile with OpenSSL-noasm
+ifeq ($(NOASM), 1)
+	LDFLAGS_OPENSSL=-L$(OPENSSL_local_dir)/lib -Wl,-rpath=$(OPENSSL_local_dir)/lib
+	INCLUDE_OPENSSL=-I$(OPENSSL_local_dir)/include
+	BIN += bin/sae_dragonfly-noasm
+endif
+
 all: $(BIN)
 
 bin/sae_dragonfly: $(OBJECTS_openssl)
 	mkdir -p bin
 	$(CC) $(CFLAGS) $^ -lcrypto -o $@
+
+bin/sae_dragonfly-noasm: $(OBJECTS_openssl)
+	mkdir -p bin
+	$(CC) $(CFLAGS) $(INCLUDE_OPENSSL) $^ $(LDFLAGS_OPENSSL) -lcrypto -o $@
 
 bin/sae_dragonstar: $(OBJECTS_dragonstar) $(HACL_dir)/gcc-compatible/libevercrypt.so
 	mkdir -p bin
