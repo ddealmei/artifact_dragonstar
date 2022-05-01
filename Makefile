@@ -18,9 +18,11 @@ OBJECTS_dragonstar  := $(patsubst $(DRAGONSTAR_IMPLEM_dir)/%.c, $(DRAGONSTAR_IMP
 all: $(BIN)
 
 bin/sae_dragonfly: $(OBJECTS_openssl)
+	mkdir -p bin
 	$(CC) $(CFLAGS) $^ -lcrypto -o $@
 
 bin/sae_dragonstar: $(OBJECTS_dragonstar) $(HACL_dir)/gcc-compatible/libevercrypt.so
+	mkdir -p bin
 	$(CC) $(CFLAGS) $(INCLUDE_HACL) $^ $(LDFLAGS_HACL) -lcrypto -o $@
 
 $(HACL_dir)/gcc-compatible/libevercrypt.so:
@@ -35,11 +37,14 @@ $(DRAGONSTAR_IMPLEM_dir)/%.o: $(DRAGONSTAR_IMPLEM_dir)/%.c
 
 clean: clean_hacl clean_ref clean_dragonstar
 
+clean_bin: 
+	rm -rf ./bin/*
+
 clean_hacl:
 	make -C $(HACL_dir)/gcc-compatible clean
 
 clean_dragonstar:
-	rm -f bin/sae_dragonstar $(OBJECTS_dragonstar)
+	rm -f $(OBJECTS_dragonstar)
 
 clean_ref:
-	rm -f bin/sae_dragonfly* $(OBJECTS_openssl) 
+	rm -f $(OBJECTS_openssl) 
